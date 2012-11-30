@@ -109,7 +109,7 @@ function updatePageCanvas(){
         // preload options
         proxy: false,
         timeout: 0,    // no timeout
-        useCORS: false, // try to load images as CORS (where available), before falling back to proxy (not yet implemented?)
+        useCORS: true, // try to load images as CORS (where available), before falling back to proxy (not yet implemented?)
         allowTaint: false, // whether to allow images to taint the canvas, won't need proxy if set to true
 
         // parse options

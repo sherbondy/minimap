@@ -2320,7 +2320,12 @@ _html2canvas.Preload = function( options ) {
                     setImageLoadHandlers(img, imageObj);
                     img.src = src;
                 } else if ( supportCORS && !options.allowTaint && options.useCORS ) {
+                    return;
+                    // NOTE!! This is all based on the faulty notion that images with Access Control Allow Origin * (CORS)
+                    // Will be allowed to render in a canvas on a different domain. However this is false.
+                    // http://stackoverflow.com/questions/2985097/is-canvas-security-model-ignoring-access-control-allow-origin-headers
                     // attempt to load with CORS
+                    src = "http://minimapproxy.appspot.com/?url=" + src + "&callback=asdf";
 
                     img.crossOrigin = "anonymous";
                     imageObj = images[src] = {
@@ -2328,6 +2333,7 @@ _html2canvas.Preload = function( options ) {
                     };
                     images.numTotal++;
                     setImageLoadHandlers(img, imageObj);
+                    console.log(src);
                     img.src = src;
 
                     // work around for https://bugs.webkit.org/show_bug.cgi?id=80028

@@ -2,8 +2,9 @@ console.log("WOOHOO.");
 
 var SLIDE_DURATION = 200;
 var HIDE_INTERVAL = 4000;
+var RESIZE_INTERVAL = 100;
 
-var hideTimer;
+var hideTimer, resizeTimer;
 var minimap =
     '<div id="minimap">'+
     '    <div id="viewport"></div>'+
@@ -29,15 +30,20 @@ function updateViewport() {
     var mmh = $("#minimap").height();
 
     // scale viewport relative to full page size
-    var vw = mmw * $(window).width()/bw;
-    var vh = mmh * $(window).height()/bh;
+    var ww = $(window).width();
+    var wh = $(window).height();
+    var vw = mmw * ww/bw;
+    var vh = mmh * wh/bh;
     var left = mmw * $(window).scrollLeft()/bw;
     var top = mmh * $(window).scrollTop()/bh;
 
     $("#viewport").css({width: vw, height: vh,
                         marginLeft: left, marginTop: top});
 
-    var canvas = $("#canvas-box canvas")
+    // canvas box repositioning
+    var ch = $("#canvas-box").height();
+    // only do it if the image is longer than the window
+
 }
 
 function canvasRendered(canvas) {
@@ -54,7 +60,12 @@ function canvasRendered(canvas) {
 
 function updatePageCanvas(){
     document.getElementById("minimap").style.display = "none";
-
+    
+    var width = document.body.scrollWidth;
+    var height = document.body.scrollHeight;
+    var scale = 200/width;
+    var scaledHeight = scale*height;
+    
     html2canvas( [ document.body ], {
                 // general
         logging: true,
@@ -98,15 +109,10 @@ function showMinimap() {
 
 createMinimap();
 
-var resizeTimeout = null;
-
-$(window).scroll(updateViewport);
-$(window).resize(updateViewport);
-
 $(window).resize(function(){
-    clearTimeout(resizeTimeout);
-    resizeTimeout = window.setTimeout(updatePageCanvas, 100);
+    clearTimeout(resizeTimer);
+    resizeTimer = window.setTimeout(updatePageCanvas, RESIZE_INTERVAL);
 });
 
+$(window).scroll(showMinimap);
 $(window).bind('scroll resize', updateViewport);
-$(window).bind('scroll', showMinimap);

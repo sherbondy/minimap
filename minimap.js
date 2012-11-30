@@ -32,17 +32,25 @@ function updateViewport() {
     // scale viewport relative to full page size
     var ww = $(window).width();
     var wh = $(window).height();
+    var wt = $(window).scrollTop();
     var vw = mmw * ww/bw;
     var vh = mmh * wh/bh;
     var left = mmw * $(window).scrollLeft()/bw;
-    var top = mmh * $(window).scrollTop()/bh;
+    var top = mmh * wt/bh;
+
+    // canvas box repositioning
+    var ch = $("#canvas-box").height();
+    var percentage = (wt/bh);
+    var mapMargin = -1*(ch - wh)*percentage;
+   
+    // only do it if the image is longer than the window
+    if (ch > wh) {
+        $("#minimap").css("margin-top", mapMargin);
+    }
 
     $("#viewport").css({width: vw, height: vh,
                         marginLeft: left, marginTop: top});
 
-    // canvas box repositioning
-    var ch = $("#canvas-box").height();
-    // only do it if the image is longer than the window
 
 }
 

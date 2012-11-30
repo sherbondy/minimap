@@ -12,6 +12,9 @@
 	"default_icon": "icon/button.png",
 	"default_title": "Toggle Minimap"
     },
+    "background": {
+	"scripts": ["background.js"]
+    },
     "permissions": [
 	"<all_urls>",
 	"tabs",

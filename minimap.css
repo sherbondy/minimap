@@ -1,0 +1,8 @@
+#minimap {
+    opacity: 0.5;
+    -webkit-transition: opacity 0.4s linear;
+}
+
+#minimap:hover {
+    opacity:1.0;
+}

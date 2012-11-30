@@ -16,6 +16,7 @@ function canvasRendered(canvas) {
        to append it to the page call for example
        document.body.appendChild( canvas );
     */
+    canvas.removeAttribute("style");
     $('#canvas-box').html(canvas);
     $("#minimap").show();
 }

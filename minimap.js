@@ -10,6 +10,8 @@ var minimap =
 function createMinimap() {
     console.log("createMiniMap");
     $('body').append(minimap);
+    $("#minimap").css("background-color", 
+                        $("body").css("background-color"));
     updatePageCanvas();
 }
 

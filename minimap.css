@@ -2,7 +2,6 @@
     opacity: 0.5;
     -webkit-transition: opacity 0.2s linear;
     z-index: 9999;
-    width: 200px;
     background-color: #000;
     position: fixed;
     right: 16px;
@@ -15,7 +14,7 @@
     border: 2px solid orangered;
 }
 
-#canvas-box canvas {
+#minimap, #canvas-box canvas {
     width: 200px;
     height: auto;
 }

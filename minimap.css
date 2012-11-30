@@ -5,7 +5,7 @@
     background-color: #000;
     position: fixed;
     right: -160px;
-    top: 16px;
+    top: 0px;
     display: none;
 
     -moz-user-select: none; 
@@ -15,19 +15,22 @@
 }
 
 #viewport {
-    opacity: 0.0;
+    opacity: 0.2;
+    background-color:#999;
     position: absolute;
-    border: 2px solid orangered;
+    border: 2px solid #000;
 }
 
 #viewport:hover {
     cursor: pointer;
 }
 
-#minimap, #canvas-box canvas {
+/*#minimap, #canvas-box canvas {*/
+#minimap {
     width: 200px;
     height: auto;
 }
+
 /*
 #minimap:hover {
     opacity:1.0;

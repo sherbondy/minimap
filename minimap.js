@@ -181,11 +181,9 @@ function scrollViewport(pageY){
     }
 }
 
-$("body").bind('mouseup', function(e){
+$("body").bind('mouseup mouseleave', function(e){
     scrollViewport(e.pageY);
     draggingViewport = false;
-});
-
-$("body").bind('mousemove', function(e){
+}).bind('mousemove', function(e){
     scrollViewport(e.pageY);
 });

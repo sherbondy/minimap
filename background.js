@@ -1,8 +1,22 @@
+function loadScripts(tabID, scriptArray){
+    if (scriptArray.length > 0){
+	var scriptName = scriptArray[0];
+	chrome.tabs.executeScript(tabID, {file: scriptName}, function(result){
+	    console.log("loaded "+scriptName);
+	    loadScripts(tabID, scriptArray.slice(1));
+	});
+    } else {
+	console.log("all scripts loaded.");
+    }
+}
+
 function createMinimap(tab){
-    console.log("done loading.");
-    chrome.tabs.executeScript(tab.id, {file: "minimap.js"}, function(result){
-	console.log("execution finished.");
-    });
+    console.log("creating minimap");
+
+    chrome.tabs.insertCSS(tab.id, {file: "minimap.css"});
+
+    var scripts = ["html2canvas.js", "jquery-1.8.3.min.js", "minimap.js"];
+    loadScripts(tab.id, scripts);
 }
 
 chrome.browserAction.onClicked.addListener(function(tabID) {

@@ -1,15 +1,28 @@
 console.log("WOOHOO.");
 
-function canvasRendered(canvas) {
-    /* canvas is the actual canvas element, 
-       to append it to the page call for example 
-       document.body.appendChild( canvas );
-    */
-    document.body.appendChild(canvas);
+var minimap =
+    '<div id="minimap">'+
+    '    <div id="canvas-box"></canvas>'+
+    '</div>';
+
+
+
+
+
+function createMinimap() {
+    console.log("createMiniMap");
+    $('body').append(minimap);
 }
 
+function canvasRendered(canvas) {
+    /* canvas is the actual canvas element,
+       to append it to the page call for example
+       document.body.appendChild( canvas );
+    */
+    $('#canvas-box').html(canvas);
+}
 
-function updateMinimap(){
+function updatePageCanvas(){
     html2canvas( [ document.body ], {
                 // general
         logging: true,
@@ -38,4 +51,5 @@ function updateMinimap(){
     });
 }
 
-updateMinimap();
+createMinimap();
+updatePageCanvas();

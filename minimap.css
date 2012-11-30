@@ -22,10 +22,11 @@
 }
 
 #viewport:hover {
-    cursor: pointer;
+    cursor: move;
 }
 
-#minimap, #canvas-box canvas {
+#minimap, #mm-image {
+    display: block;
     width: 200px;
     height: auto;
 }

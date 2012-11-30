@@ -13,7 +13,10 @@ var SCROLL_DISTANCE_TO_SHOW = 700; // Number of pixels after above constant scro
 var scroll_samples;
 scroll_samples = [];
 // initialize scroll samples to current pos
-for (var i = 0; i < SCROLL_DISTANCE_SAMPLES; i++) scroll_samples[i] = document.body.scrollHeight;
+var i;
+for (i = 0; i < SCROLL_DISTANCE_SAMPLES; i += 1){
+    scroll_samples[i] = document.body.scrollHeight;
+}
 
 window.setInterval(function() {
     scroll_samples.splice(0, 0, window.pageYOffset);
@@ -24,7 +27,7 @@ var hideTimer, resizeTimer;
 var minimap =
     '<div id="minimap">'+
     '    <div id="viewport"></div>'+
-    '    <div id="canvas-box"></canvas>'+
+    '    <img id="mm-image">'+
     '</div>';
 
 function hasVerticalScroll (element){
@@ -35,7 +38,7 @@ function hasVerticalScroll (element){
     } else if (element.currentStyle) {
         if (element.currentStyle.overflow === 'hidden') return false;
     }
-    return $("body").height() > $(window).height();
+    return  document.body.scrollHeight > $(window).height();
 }
 
 function createMinimap() {
@@ -61,7 +64,7 @@ function updateViewport() {
     var top = mmh * wt/bh;
 
     // canvas box repositioning
-    var ch = $("#canvas-box").height();
+    var ch = $("#mm-image").height();
     var percentage = (wt/bh);
     var mapMargin = -1*(ch - wh)*percentage;
    
@@ -81,9 +84,9 @@ function canvasRendered(canvas) {
        to append it to the page call for example
        document.body.appendChild( canvas );
     */
-    canvas.removeAttribute("style");
 
-    $('#canvas-box').html(canvas);
+    var dataURL = canvas.toDataURL();
+    $("#mm-image").attr("src", dataURL);
     updateViewport();
     $("#minimap").show();
 }

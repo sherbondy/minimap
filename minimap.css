@@ -14,6 +14,10 @@
     border: 2px solid orangered;
 }
 
+#viewport:hover {
+    cursor: pointer;
+}
+
 #minimap, #canvas-box canvas {
     width: 200px;
     height: auto;

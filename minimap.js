@@ -119,3 +119,35 @@ $(window).resize(function(){
 
 $(window).scroll(showMinimap);
 $(window).bind('scroll resize', updateViewport);
+
+var draggingViewport = false;
+$("#minimap").on('mousedown', function(e){
+    e.preventDefault();
+    draggingViewport = true;
+});
+
+function scrollViewport(pageY){
+    if (draggingViewport){
+        var y = pageY - $("#minimap").offset().top;
+        var mmh = $("#minimap").height();
+        var wh = $(window).height();
+        var vph = $("#viewport").height();
+        var bh = document.body.scrollHeight;
+
+        var percentage = y/mmh;
+        if (percentage > 1){ percentage = 1; }
+        var top = percentage*bh - wh/2;
+        console.log("percent: "+percentage+", top: "+top);
+        
+        $(window).scrollTop(top);
+    }
+}
+
+$("body").bind('mouseup', function(e){
+    scrollViewport(e.pageY);
+    draggingViewport = false;
+});
+
+$("body").bind('mousemove', function(e){
+    scrollViewport(e.pageY);
+});

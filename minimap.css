@@ -10,6 +10,11 @@
     display: none;
 }
 
+#viewport {
+    position: absolute;
+    border: 2px solid orangered;
+}
+
 #canvas-box canvas {
     width: 200px;
     height: auto;

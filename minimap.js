@@ -6,9 +6,6 @@ var minimap =
     '</div>';
 
 
-
-
-
 function createMinimap() {
     console.log("createMiniMap");
     $('body').append(minimap);
@@ -49,7 +46,7 @@ function updatePageCanvas(){
         renderer: "Canvas",
         onrendered: canvasRendered
     });
-}
+
 
 createMinimap();
 updatePageCanvas();

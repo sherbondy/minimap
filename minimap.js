@@ -1,6 +1,6 @@
 var minimap = 
     '<div id="minimap">'+
-    '    <canvas id="minimap-canvas"></canvas>'+
+    '    <div id="canvas-box"></div>'+
     '</div>';
 
 function createMinimap(){

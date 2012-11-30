@@ -5,6 +5,7 @@ var minimap =
 
 function createMinimap(){
     console.log("hi");
+    $('body').append(minimap);
 }
 
 createMinimap();

@@ -1,3 +1,5 @@
+console.log("WOOHOO.");
+
 var SLIDE_DURATION = 200;
 var HIDE_INTERVAL = 4000;
 var FADE_OUT_DURATION = 1000;
@@ -7,6 +9,10 @@ var RESIZE_INTERVAL = 100;
 var SCROLL_DISTANCE_SAMPLES = 10; // Kind of a hack: the number of scroll-events ago to check if scroll-distance was surpassed
 var SCROLL_SAMPLE_INTERVAL_MS = 50; // I have autocomplete ;)
 var SCROLL_DISTANCE_TO_SHOW = 700; // Number of pixels after above constant scroll events to show minimap. -1 shows minimap on all scroll events
+
+var mouseInside = false; // mouse inside minimap currently?
+var draggingViewport = false; // currently dragging minimap viewport?
+
 
 var scroll_samples;
 scroll_samples = [];
@@ -47,7 +53,7 @@ function createMinimap() {
 }
 
 function updateViewport() {
-    var bh = document.body.scrollHeihgt;
+    var bh = document.body.scrollHeight;
     var bw = document.body.scrollWidth;
     var mmw = $("#minimap").width();
     var mmh = $("#minimap").height();
@@ -103,9 +109,7 @@ function updatePageCanvas(){
         // preload options
         proxy: false,
         timeout: 0,    // no timeout
-        
-        useCORS: true, // try to load images as CORS (where available), before falling back to proxy (not yet implemented?)
-        
+        useCORS: false, // try to load images as CORS (where available), before falling back to proxy (not yet implemented?)
         allowTaint: false, // whether to allow images to taint the canvas, won't need proxy if set to true
 
         // parse options
@@ -150,35 +154,32 @@ function showMinimap() {
     hideTimer = setTimeout(hideMinimap,HIDE_INTERVAL);
 }
 
+$(document).ready(function(){
+    createMinimap();
 
-createMinimap();
+    $('#minimap').bind('mouseenter', function() {
+        showMinimap();
+        mouseInside = true;
+        clearTimeout(hideTimer);
+    });
 
-var mouseInside = false;
+    $('#minimap').bind('mouseleave', function() {
+        mouseInside = false;
+        hideTimer = setTimeout(hideMinimap,HIDE_INTERVAL);
+    });
 
+    $(window).resize(function(){
+        clearTimeout(resizeTimer);
+        resizeTimer = window.setTimeout(updatePageCanvas, RESIZE_INTERVAL);
+    });
 
-$('#minimap').bind('mouseenter', function() {
-    showMinimap();
-    mouseInside = true;
-    clearTimeout(hideTimer);
-});
+    $(window).scroll(scrollHandler);
+    $(window).bind('scroll resize', updateViewport);
 
-$('#minimap').bind('mouseleave', function() {
-    mouseInside = false;
-    hideTimer = setTimeout(hideMinimap,HIDE_INTERVAL);
-});
-
-$(window).resize(function(){
-    clearTimeout(resizeTimer);
-    resizeTimer = window.setTimeout(updatePageCanvas, RESIZE_INTERVAL);
-});
-
-$(window).scroll(scrollHandler);
-$(window).bind('scroll resize', updateViewport);
-
-var draggingViewport = false;
-$("#minimap").on('mousedown', function(e){
-    e.preventDefault();
-    draggingViewport = true;
+    $("#minimap").on('mousedown', function(e){
+        e.preventDefault();
+        draggingViewport = true;
+    });
 });
 
 function scrollViewport(pageY){

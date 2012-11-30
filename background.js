@@ -1,11 +1,21 @@
 var disabled = false;
 // Called when the user clicks on the browser action.
+
+function badgeToggle(color, text){
+    chrome.browserAction.setBadgeBackgroundColor({color:color});
+    chrome.browserAction.setBadgeText({text: text});
+}
+
+function badgeOn(){ badgeToggle("#00FF00", "ON"); }
+badgeOn();
+
 chrome.browserAction.onClicked.addListener(function(tab) {
     disabled = !disabled;
     console.log("DISABLED: ",disabled);
 
     if (disabled) {
         // get all tabs and KILL minimaps in them
+        badgeToggle("#FF0000", "OFF");
         chrome.tabs.query({}, function(tabs) {
             for (var i = 0; i < tabs.length; i++) {
                 var tab = tabs[i];
@@ -15,6 +25,7 @@ chrome.browserAction.onClicked.addListener(function(tab) {
         return;
     } else {
         // return functionality to current tab
+        badgeOn();
         chrome.tabs.executeScript(null, {code: "createMinimap();"}, null);
     }
     // could try to remake minimaps on all tabs here, but a quick attempt revealed many issues

@@ -157,15 +157,16 @@ function showMinimap() {
 $(document).ready(function(){
     createMinimap();
 
-    $('#minimap').bind('mouseenter', function() {
+    $('#minimap').live('mouseenter', function() {
         showMinimap();
         mouseInside = true;
         clearTimeout(hideTimer);
-    });
-
-    $('#minimap').bind('mouseleave', function() {
+    }).live('mouseleave', function() {
         mouseInside = false;
         hideTimer = setTimeout(hideMinimap,HIDE_INTERVAL);
+    }).live('mousedown', function(e){
+        e.preventDefault();
+        draggingViewport = true;
     });
 
     $(window).resize(function(){
@@ -176,10 +177,6 @@ $(document).ready(function(){
     $(window).scroll(scrollHandler);
     $(window).bind('scroll resize', updateViewport);
 
-    $("#minimap").on('mousedown', function(e){
-        e.preventDefault();
-        draggingViewport = true;
-    });
 });
 
 function scrollViewport(pageY){

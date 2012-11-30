@@ -13,6 +13,9 @@ chrome.browserAction.onClicked.addListener(function(tab) {
             }
         });
         return;
+    } else {
+        // return functionality to current tab
+        chrome.tabs.executeScript(null, {code: "createMinimap();"}, null);
     }
     // could try to remake minimaps on all tabs here, but a quick attempt revealed many issues
 });

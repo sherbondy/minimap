@@ -1,7 +1,8 @@
 console.log("WOOHOO.");
 
 var SLIDE_DURATION = 200;
-var HIDE_INTERVAL = 4000;
+var HIDE_INTERVAL = 3000;
+var FADE_OUT_DURATION = 1000;
 
 var hideTimer;
 var minimap =
@@ -79,12 +80,12 @@ function updatePageCanvas(){
 
 
 function hideMinimap() {
-    console.log("HELLO!!!");
-    $("#minimap").animate({"right":"-160px","opacity":"0.2"},SLIDE_DURATION);
+    // Fading first to minimize distraction
+    $("#minimap").stop().animate({"opacity":"0.2"},FADE_OUT_DURATION).animate({"right":"-160px"},SLIDE_DURATION);
 }
 
 function showMinimap() {
-    $("#minimap").animate({"right":"16px","opacity":"1.0"},SLIDE_DURATION);
+    $("#minimap").stop().animate({"right":"16px","opacity":"1.0"},SLIDE_DURATION);
     clearTimeout(hideTimer);
     hideTimer = setTimeout(hideMinimap,HIDE_INTERVAL);
 }
@@ -92,5 +93,17 @@ function showMinimap() {
 
 createMinimap();
 
+var mouseInside = false;
 $(window).bind('scroll resize', updateViewport);
-$(window).bind('scroll', showMinimap);
+$(window).bind('scroll', showMinimap); //TODO: Consider only showing when user scrolls a lot, and is clearly "seeking", not reading
+
+$('#minimap').bind('mouseenter', function() {
+    mouseInside = true;
+    showMinimap();
+    clearTimeout(hideTimer);
+});
+
+$('#minimap').bind('mouseleave', function() {
+    mouseInside = false;
+    hideTimer = setTimeout(hideMinimap,HIDE_INTERVAL);
+});

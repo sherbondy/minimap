@@ -8,7 +8,7 @@ var RESIZE_INTERVAL = 100;
 // "reading" vs "seeking" options
 var SCROLL_DISTANCE_SAMPLES = 10; // Kind of a hack: the number of scroll-events ago to check if scroll-distance was surpassed
 var SCROLL_SAMPLE_INTERVAL_MS = 50; // I have autocomplete ;)
-var SCROLL_DISTANCE_TO_SHOW = 500; // Number of pixels after above constant scroll events to show minimap. -1 shows minimap on all scroll events
+var SCROLL_DISTANCE_TO_SHOW = 700; // Number of pixels after above constant scroll events to show minimap. -1 shows minimap on all scroll events
 
 var scroll_samples;
 scroll_samples = [];
@@ -20,9 +20,6 @@ window.setInterval(function() {
     scroll_samples.pop();
 },SCROLL_SAMPLE_INTERVAL_MS);
 
-
-
-
 var hideTimer, resizeTimer;
 var minimap =
     '<div id="minimap">'+
@@ -32,7 +29,6 @@ var minimap =
 
 
 function createMinimap() {
-    console.log("createMiniMap");
     $('body').append(minimap);
     $("#minimap").css("background-color",
                         $("body").css("background-color"));
@@ -159,5 +155,5 @@ $(window).resize(function(){
     resizeTimer = window.setTimeout(updatePageCanvas, RESIZE_INTERVAL);
 });
 
-$(window).scroll(scrollHandler); //TODO: Consider only showing when user scrolls a lot, and is clearly "seeking", not reading
+$(window).scroll(scrollHandler);
 $(window).bind('scroll resize', updateViewport);

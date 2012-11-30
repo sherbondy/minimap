@@ -27,6 +27,16 @@ var minimap =
     '    <div id="canvas-box"></canvas>'+
     '</div>';
 
+function hasVerticalScroll (element){
+    if (element.style.overflow === 'hidden'){
+        return false;
+    } else if (window.getComputedStyle){
+        if (window.getComputedStyle(element, null).overflow === 'hidden') return false;
+    } else if (element.currentStyle) {
+        if (element.currentStyle.overflow === 'hidden') return false;
+    }
+    return $("body").height() > $(window).height();
+}
 
 function createMinimap() {
     $('body').append(minimap);
@@ -79,9 +89,12 @@ function canvasRendered(canvas) {
 }
 
 function updatePageCanvas(){
-    $("#minimap").hide();
     document.getElementById("minimap").style.display = "none";
-    
+    console.log(hasVerticalScroll(document.body));
+    if (!hasVerticalScroll(document.body)) {
+        return;
+    }
+
     html2canvas( [ document.body ], {
                 // general
         logging: true,

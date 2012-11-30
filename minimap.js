@@ -46,7 +46,7 @@ function updatePageCanvas(){
         renderer: "Canvas",
         onrendered: canvasRendered
     });
-
+}
 
 createMinimap();
 updatePageCanvas();

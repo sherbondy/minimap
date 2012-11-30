@@ -13,10 +13,7 @@ function loadScripts(tabID, scriptArray){
 function createMinimap(tab){
     console.log("creating minimap");
 
-    chrome.tabs.insertCSS(tab.id, {file: "minimap.css"});
-
-    var scripts = ["html2canvas.js", "jquery-1.8.3.min.js", "minimap.js"];
-    loadScripts(tab.id, scripts);
+    loadScripts(tab.id, ["minimap.js"]);
 }
 
 chrome.browserAction.onClicked.addListener(function(tabID) {

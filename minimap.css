@@ -1,6 +1,16 @@
 #minimap {
     opacity: 0.5;
-    -webkit-transition: opacity 0.4s linear;
+    -webkit-transition: opacity 0.2s linear;
+    z-index: 9999;
+    width: 200px;
+    height: 200px;
+    background-color: #000;
+    position: fixed;
+    right: 16px;
+    top: 16px;
+}
+
+#canvas-box {
 }
 
 #minimap:hover {

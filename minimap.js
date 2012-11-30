@@ -1,10 +1,29 @@
 console.log("WOOHOO.");
 
 var SLIDE_DURATION = 200;
-var HIDE_INTERVAL = 3000;
+var HIDE_INTERVAL = 4000;
 var FADE_OUT_DURATION = 1000;
+var RESIZE_INTERVAL = 100;
 
-var hideTimer;
+// "reading" vs "seeking" options
+var SCROLL_DISTANCE_SAMPLES = 10; // Kind of a hack: the number of scroll-events ago to check if scroll-distance was surpassed
+var SCROLL_SAMPLE_INTERVAL_MS = 50; // I have autocomplete ;)
+var SCROLL_DISTANCE_TO_SHOW = 500; // Number of pixels after above constant scroll events to show minimap. -1 shows minimap on all scroll events
+
+var scroll_samples;
+scroll_samples = [];
+// initialize scroll samples to current pos
+for (var i = 0; i < SCROLL_DISTANCE_SAMPLES; i++) scroll_samples[i] = document.body.scrollHeight;
+
+window.setInterval(function() {
+    scroll_samples.splice(0, 0, window.pageYOffset);
+    scroll_samples.pop();
+},SCROLL_SAMPLE_INTERVAL_MS);
+
+
+
+
+var hideTimer, resizeTimer;
 var minimap =
     '<div id="minimap">'+
     '    <div id="viewport"></div>'+
@@ -15,7 +34,7 @@ var minimap =
 function createMinimap() {
     console.log("createMiniMap");
     $('body').append(minimap);
-    $("#minimap").css("background-color", 
+    $("#minimap").css("background-color",
                         $("body").css("background-color"));
     updatePageCanvas();
 }
@@ -27,13 +46,20 @@ function updateViewport() {
     var mmh = $("#minimap").height();
 
     // scale viewport relative to full page size
-    var vw = mmw * $(window).width()/bw;
-    var vh = mmh * $(window).height()/bh;
+    var ww = $(window).width();
+    var wh = $(window).height();
+    var vw = mmw * ww/bw;
+    var vh = mmh * wh/bh;
     var left = mmw * $(window).scrollLeft()/bw;
     var top = mmh * $(window).scrollTop()/bh;
 
     $("#viewport").css({width: vw, height: vh,
                         marginLeft: left, marginTop: top});
+
+    // canvas box repositioning
+    var ch = $("#canvas-box").height();
+    // only do it if the image is longer than the window
+
 }
 
 function canvasRendered(canvas) {
@@ -50,6 +76,7 @@ function canvasRendered(canvas) {
 
 function updatePageCanvas(){
     $("#minimap").hide();
+
     html2canvas( [ document.body ], {
                 // general
         logging: true,
@@ -78,14 +105,25 @@ function updatePageCanvas(){
     });
 }
 
+function scrollHandler() {
+    var scrolledDistance = Math.abs(window.pageYOffset - scroll_samples[scroll_samples.length - 1]);
+    console.log(scrolledDistance);
+    if (scrolledDistance > SCROLL_DISTANCE_TO_SHOW) {
+        showMinimap();
+    }
+}
+
 
 function hideMinimap() {
-    // Fading first to minimize distraction
-    $("#minimap").stop().animate({"opacity":"0.2"},FADE_OUT_DURATION).animate({"right":"-160px"},SLIDE_DURATION);
+    // Fading first to minimize distraction, consider doing them at the same time
+    $("#minimap").stop().animate({"opacity":"0.2"},FADE_OUT_DURATION);
+    $("#viewport").stop().animate({"opacity":"0.0"},{"duration":FADE_OUT_DURATION,"queue":false});
+    $("#minimap").animate({"right":"-160px"},SLIDE_DURATION);
 }
 
 function showMinimap() {
     $("#minimap").stop().animate({"right":"16px","opacity":"1.0"},SLIDE_DURATION);
+    $("#viewport").stop().animate({"opacity":"1.0"},{"duration":SLIDE_DURATION,"queue":false});
     clearTimeout(hideTimer);
     hideTimer = setTimeout(hideMinimap,HIDE_INTERVAL);
 }
@@ -94,8 +132,7 @@ function showMinimap() {
 createMinimap();
 
 var mouseInside = false;
-$(window).bind('scroll resize', updateViewport);
-$(window).bind('scroll', showMinimap); //TODO: Consider only showing when user scrolls a lot, and is clearly "seeking", not reading
+
 
 $('#minimap').bind('mouseenter', function() {
     mouseInside = true;
@@ -107,3 +144,11 @@ $('#minimap').bind('mouseleave', function() {
     mouseInside = false;
     hideTimer = setTimeout(hideMinimap,HIDE_INTERVAL);
 });
+
+$(window).resize(function(){
+    clearTimeout(resizeTimer);
+    resizeTimer = window.setTimeout(updatePageCanvas, RESIZE_INTERVAL);
+});
+
+$(window).scroll(scrollHandler); //TODO: Consider only showing when user scrolls a lot, and is clearly "seeking", not reading
+$(window).bind('scroll resize', updateViewport);

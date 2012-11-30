@@ -8,6 +8,7 @@
   },
   "permissions": [
       "<all_urls>",
-      "tabs"
+      "tabs",
+      "pageCapture"
   ]
 }

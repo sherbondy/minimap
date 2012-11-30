@@ -1,11 +1,8 @@
-function createMinimap(){
-    console.log("done loading.");    
-}
-
-function updateMinimap(){
-}
-
-function moveViewport(){
+function createMinimap(tab){
+    console.log("done loading.");
+    chrome.tabs.executeScript(tab.id, {file: "minimap.js"}, function(result){
+	console.log("execution finished.");
+    });
 }
 
 chrome.browserAction.onClicked.addListener(function(tabID) {
@@ -14,9 +11,9 @@ chrome.browserAction.onClicked.addListener(function(tabID) {
 });
 
 chrome.tabs.onUpdated.addListener(function(tabID){
-    chrome.tabs.get(tab, function(tab){
+    chrome.tabs.get(tabID, function(tab){
 	if (tab.status === "complete" && (tab.url != undefined)){
-	    createMinimap();
+	    createMinimap(tab);
 	}
     });
 });

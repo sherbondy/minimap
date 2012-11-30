@@ -1,0 +1,13 @@
+{
+  "name": "Minimap",
+  "version": "1.0",
+  "manifest_version": 2,
+  "description": "Minimap preview of your current web page.",
+  "browser_action": {
+    "default_icon": "icon.png"
+  },
+  "permissions": [
+      "<all_urls>",
+      "pageCapture"
+  ]
+}

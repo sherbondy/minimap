@@ -1,5 +1,3 @@
-console.log("WOOHOO.");
-
 var SLIDE_DURATION = 200;
 var HIDE_INTERVAL = 4000;
 var FADE_OUT_DURATION = 1000;
@@ -49,7 +47,7 @@ function createMinimap() {
 }
 
 function updateViewport() {
-    var bh = document.body.scrollHeight;
+    var bh = document.body.scrollHeihgt;
     var bw = document.body.scrollWidth;
     var mmw = $("#minimap").width();
     var mmh = $("#minimap").height();
@@ -93,19 +91,21 @@ function canvasRendered(canvas) {
 
 function updatePageCanvas(){
     document.getElementById("minimap").style.display = "none";
-    console.log(hasVerticalScroll(document.body));
+
     if (!hasVerticalScroll(document.body)) {
         return;
     }
 
     html2canvas( [ document.body ], {
                 // general
-        logging: true,
+        logging: false,
 
         // preload options
         proxy: false,
         timeout: 0,    // no timeout
-        useCORS: false, // try to load images as CORS (where available), before falling back to proxy (not yet implemented?)
+        
+        useCORS: true, // try to load images as CORS (where available), before falling back to proxy (not yet implemented?)
+        
         allowTaint: false, // whether to allow images to taint the canvas, won't need proxy if set to true
 
         // parse options
@@ -128,7 +128,7 @@ function updatePageCanvas(){
 
 function scrollHandler() {
     var scrolledDistance = Math.abs(window.pageYOffset - scroll_samples[scroll_samples.length - 1]);
-    console.log(scrolledDistance);
+
     if (scrolledDistance > SCROLL_DISTANCE_TO_SHOW) {
         showMinimap();
     }
@@ -192,7 +192,6 @@ function scrollViewport(pageY){
         var percentage = y/mmh;
         if (percentage > 1){ percentage = 1; }
         var top = percentage*bh - wh/2;
-        console.log("percent: "+percentage+", top: "+top);
         
         $(window).scrollTop(top);
     }

@@ -1,14 +1,20 @@
 {
-  "name": "Minimap",
-  "version": "1.0",
-  "manifest_version": 2,
-  "description": "Minimap preview of your current web page.",
-  "browser_action": {
-    "default_icon": "icon.png"
-  },
-  "permissions": [
-      "<all_urls>",
-      "tabs",
-      "pageCapture"
-  ]
+    "name": "Minimap",
+    "version": "1.0",
+    "manifest_version": 2,
+    "description": "Minimap preview of your current web page.",
+    "icons": {
+	"16": "icon/small.png",
+	"48": "icon/medium.png",
+	"128": "icon/large.png"
+    },
+    "browser_action": {
+	"default_icon": "icon/button.png",
+	"default_title": "Toggle Minimap"
+    },
+    "permissions": [
+	"<all_urls>",
+	"tabs",
+	"pageCapture"
+    ]
 }

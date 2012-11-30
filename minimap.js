@@ -17,15 +17,17 @@ function canvasRendered(canvas) {
        document.body.appendChild( canvas );
     */
     $('#canvas-box').html(canvas);
+    $("#minimap").show();
 }
 
 function updatePageCanvas(){
+    $("#minimap").hide();
     html2canvas( [ document.body ], {
                 // general
         logging: true,
 
         // preload options
-        proxy: "http://html2canvas.appspot.com/",
+        proxy: false,
         timeout: 0,    // no timeout
         useCORS: false, // try to load images as CORS (where available), before falling back to proxy (not yet implemented?)
         allowTaint: false, // whether to allow images to taint the canvas, won't need proxy if set to true

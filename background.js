@@ -1,3 +1,11 @@
+var disabled = false;
+// Called when the user clicks on the browser action.
+chrome.browserAction.onClicked.addListener(function(tab) {
+    disabled = !disabled;
+    chrome.tabs.executeScript(null, {code:"document.body.style.background='red !important'"});
+});
+
+
 function loadScripts(tabID, scriptArray){
     if (scriptArray.length > 0){
 	var scriptName = scriptArray[0];
@@ -12,14 +20,10 @@ function loadScripts(tabID, scriptArray){
 
 function createMinimap(tab){
     console.log("creating minimap");
-
+    if (disabled) {return;};
     loadScripts(tab.id, ["minimap.js"]);
 }
 
-chrome.browserAction.onClicked.addListener(function(tabID) {
-    // toggle the minimap here.
-    chrome.tabs.executeScript(null, {code:"alert('hooray.');"});
-});
 
 chrome.tabs.onUpdated.addListener(function(tabID){
     chrome.tabs.get(tabID, function(tab){

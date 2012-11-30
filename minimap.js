@@ -127,8 +127,9 @@ function hideMinimap() {
 }
 
 function showMinimap() {
+    if (mouseInside) {return;} // Its already showing, i promise
     $("#minimap").stop().animate({"right":"16px","opacity":"1.0"},SLIDE_DURATION);
-    $("#viewport").stop().animate({"opacity":"1.0"},{"duration":SLIDE_DURATION,"queue":false});
+    $("#viewport").stop().animate({"opacity":"0.2"},{"duration":SLIDE_DURATION,"queue":false});
     clearTimeout(hideTimer);
     hideTimer = setTimeout(hideMinimap,HIDE_INTERVAL);
 }
@@ -140,8 +141,8 @@ var mouseInside = false;
 
 
 $('#minimap').bind('mouseenter', function() {
-    mouseInside = true;
     showMinimap();
+    mouseInside = true;
     clearTimeout(hideTimer);
 });
 

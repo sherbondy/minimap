@@ -16,8 +16,11 @@ function createMinimap() {
 }
 
 function updateViewport() {
+    console.log("updating viewport");
+
     var bh = document.body.scrollHeight;
     var bw = document.body.scrollWidth;
+
     var mmw = $("#minimap").width();
     var mmh = $("#minimap").height();
 
@@ -29,6 +32,8 @@ function updateViewport() {
 
     $("#viewport").css({width: vw, height: vh,
                         marginLeft: left, marginTop: top});
+
+    var canvas = $("#canvas-box canvas")
 }
 
 function canvasRendered(canvas) {
@@ -44,7 +49,8 @@ function canvasRendered(canvas) {
 }
 
 function updatePageCanvas(){
-    $("#minimap").hide();
+    document.getElementById("minimap").style.display = "none";
+
     html2canvas( [ document.body ], {
                 // general
         logging: true,
@@ -75,4 +81,12 @@ function updatePageCanvas(){
 
 createMinimap();
 
-$(window).bind('scroll resize', updateViewport);
+var resizeTimeout = null;
+
+$(window).scroll(updateViewport);
+$(window).resize(updateViewport);
+
+$(window).resize(function(){
+    clearTimeout(resizeTimeout);
+    resizeTimeout = window.setTimeout(updatePageCanvas, 100);
+});

@@ -1,10 +1,10 @@
 #minimap {
-    opacity: 0.5;
-    -webkit-transition: opacity 0.2s linear;
+    opacity: 0.2;
+
     z-index: 9999;
     background-color: #000;
     position: fixed;
-    right: 16px;
+    right: -160px;
     top: 16px;
     display: none;
 }
@@ -18,7 +18,7 @@
     width: 200px;
     height: auto;
 }
-
+/*
 #minimap:hover {
     opacity:1.0;
-}
+}*/

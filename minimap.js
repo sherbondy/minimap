@@ -1,5 +1,9 @@
 console.log("WOOHOO.");
 
+var SLIDE_DURATION = 200;
+var HIDE_INTERVAL = 4000;
+
+var hideTimer;
 var minimap =
     '<div id="minimap">'+
     '    <div id="viewport"></div>'+
@@ -65,7 +69,7 @@ function updatePageCanvas(){
         // render options
 
         flashcanvas: undefined, // path to flashcanvas
-        width: null,
+        width: null, // TODO: set size here instead?
         height: null,
         taintTest: true, // do a taint test with all images before applying to canvas
         renderer: "Canvas",
@@ -73,6 +77,20 @@ function updatePageCanvas(){
     });
 }
 
+
+function hideMinimap() {
+    console.log("HELLO!!!");
+    $("#minimap").animate({"right":"-160px","opacity":"0.2"},SLIDE_DURATION);
+}
+
+function showMinimap() {
+    $("#minimap").animate({"right":"16px","opacity":"1.0"},SLIDE_DURATION);
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(hideMinimap,HIDE_INTERVAL);
+}
+
+
 createMinimap();
 
 $(window).bind('scroll resize', updateViewport);
+$(window).bind('scroll', showMinimap);

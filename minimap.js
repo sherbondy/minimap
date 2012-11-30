@@ -10,6 +10,8 @@ var SCROLL_DISTANCE_SAMPLES = 10; // Kind of a hack: the number of scroll-events
 var SCROLL_SAMPLE_INTERVAL_MS = 50; // I have autocomplete ;)
 var SCROLL_DISTANCE_TO_SHOW = 500; // Number of pixels after above constant scroll events to show minimap. -1 shows minimap on all scroll events
 
+
+// scroll sample stuff
 var scroll_samples;
 scroll_samples = [];
 // initialize scroll samples to current pos
@@ -20,10 +22,17 @@ window.setInterval(function() {
     scroll_samples.pop();
 },SCROLL_SAMPLE_INTERVAL_MS);
 
-
-
-
 var hideTimer, resizeTimer;
+
+
+// render worker stuff
+var render_worker = new Worker('renderworker.js');
+render_worker.onmessage = function(event) {
+    canvasRendered(event.data);
+};
+
+
+// minimap stuff
 var minimap =
     '<div id="minimap">'+
     '    <div id="viewport"></div>'+
@@ -85,33 +94,7 @@ function canvasRendered(canvas) {
 function updatePageCanvas(){
     $("#minimap").hide();
     document.getElementById("minimap").style.display = "none";
-    
-    html2canvas( [ document.body ], {
-                // general
-        logging: true,
-
-        // preload options
-        proxy: false,
-        timeout: 0,    // no timeout
-        useCORS: false, // try to load images as CORS (where available), before falling back to proxy (not yet implemented?)
-        allowTaint: false, // whether to allow images to taint the canvas, won't need proxy if set to true
-
-        // parse options
-        svgRendering: false, // use svg powered rendering where available (FF11+)
-        iframeDefault: "default",
-        ignoreElements: "IFRAME|OBJECT|PARAM",
-        useOverflow: true,
-        letterRendering: false,
-
-        // render options
-
-        flashcanvas: undefined, // path to flashcanvas
-        width: null, // TODO: set size here instead?
-        height: null,
-        taintTest: true, // do a taint test with all images before applying to canvas
-        renderer: "Canvas",
-        onrendered: canvasRendered
-    });
+    render_worker.postMessage(document.body.outerHTML);
 }
 
 function scrollHandler() {

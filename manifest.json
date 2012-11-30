@@ -19,7 +19,7 @@
         {
             "matches": ["<all_urls>"],
             "css": ["minimap.css"],
-            "js": ["jquery-1.8.3.min.js", "html2canvas.js"]
+            "js": ["jquery-1.8.3.min.js", "html2canvas.js","html-to-canvas/index.js","html-to-canvas/lib/IgeClass.js"]
         }
     ], 
     "permissions": [

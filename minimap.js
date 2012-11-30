@@ -61,11 +61,6 @@ function canvasRendered(canvas) {
 function updatePageCanvas(){
     document.getElementById("minimap").style.display = "none";
     
-    var width = document.body.scrollWidth;
-    var height = document.body.scrollHeight;
-    var scale = 200/width;
-    var scaledHeight = scale*height;
-    
     html2canvas( [ document.body ], {
                 // general
         logging: true,
